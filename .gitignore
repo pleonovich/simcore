@@ -1,0 +1,5 @@
+/vendor/
+/src/core/safemysql.class.php
+*.log.txt
+*_log.txt
+*.bak
