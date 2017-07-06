@@ -111,6 +111,29 @@ class Model extends DB {
 		}
 		return $res;
 	}
+
+	protected function schema ($create){
+		$create = false;
+	}
+
+	public function migrate () {
+		$create = DB::create()->table(self::$table);
+		$this->schema($create);
+		if(!$create) return false;
+		if(is_a($create,'DBcreate')) return $create->execute();
+		return false;
+	}
+
+	protected function insert ($insert) {
+		$insert = false;
+	}
+
+	public function insertData () {
+		$insert = DB::insert()->into(self::$table);
+		$this->insert($insert);
+		if(!$insert) return false;
+		return $insert->execute();
+	} 
 	
 	
 }

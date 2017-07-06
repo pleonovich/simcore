@@ -6,12 +6,19 @@
 class IndexController extends Controller {
 
 	public function Index () {
+		$UsersHistory = new UsersHistory();
+		echo "UsersHistory create: ";
+		var_dump($UsersHistory->migrate());
 		
 		//$this->user->setup();
 		//$this->user->addUser('Pavel Leonovich', 'pavel', '12345', 'my@mail.com');
 		//$this->content.= "user auth: ".$this->user->auth('pavel','12345');
 		$this->content.= "user is auth: ".$this->user->isAuth();
 		$Pages = new Pages();
+		//echo "migrate: ";
+		//var_dump($Pages->migrate());
+		//echo "insert: ";
+		//var_dump($Pages->insertData());
 		$ID = Args::getOne($_GET,"id",0);
 		var_dump($_GET);
 		$this->content.= "<br>url: ".$this->url->get(array('sid'=>9),'id');
@@ -37,7 +44,7 @@ class IndexController extends Controller {
 		->render('form', true);
 
 		// MAIN RENDER
-		$this->render();
+		$this->render($this->content);
 	}
 
 }

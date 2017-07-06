@@ -9,7 +9,7 @@ class Controller extends abstractController {
 	
 	public function __construct () {
 		parent::__construct();
-	}	
+	}
 	
 	protected function accessDenied () {
 		View::factory()->render('accessdenied');
@@ -19,9 +19,9 @@ class Controller extends abstractController {
 		View::factory()->render('action404');
 	}
 	
-	protected function render () {
+	protected function render ( $content ) {
 		View::factory()
-		->bind("content",$this->content)
+		->bind("content",$content)
 		->render('layout');
 	}
 
