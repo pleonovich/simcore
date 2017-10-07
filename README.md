@@ -55,59 +55,6 @@ SimpleRouter::factory()
 ->set('main', 'Index', 'index') // yourdomain.com?mod=main&id=7
 ->run();
 ```
-## Controller
-All controllers live here ```/src/controllers/```
-
-Main controller example:
-```php
-class Controller extends abstractController {
-
-  protected $title;
-  protected $content;
-	
-  public function __construct () {
-    parent::__construct();
-  }	
-  // PAGE WHEN ACCESS DENIED
-  protected function accessDenied () {
-    View::factory()->render('accessdenied');
-  }
-  // PAGE FOR 404
-  protected function action404 () {
-    View::factory()->render('action404');
-  }
-  // LAYOUT VIEW
-  protected function render () {
-    View::factory()
-    ->bind("title",$this->title)
-    ->bind("content",$this->content)
-    ->render('layout'); // view name without prefix
-  }
-
-}
-```
-Page controller example:
-```php
-class IndexController extends Controller {
-
-  public function Index () {
-    $this->title = "Hello world!";
-    $this->content = "Here is some text for our first page";
-    // MAIN RENDER
-    $this->render();
-  }
-  
-}
-```
-
-## View
-All views live here ```/src/views/``` and must have prefix ```.view```, example: ```main.view.php```
-
-View example:
-```html
-<h1><?=$title?></h1>
-<p><?=$content?></p>
-```
 
 ## Model
 All models live here ```/src/models/``` and must have prefix ```.class```, example: ```Model.class.php```
@@ -171,6 +118,68 @@ class IndexController extends Controller {
   public function Index () {   
     $data = Pages::getById(7);
     print_r($data);
+  }
+  
+}
+```
+
+## View
+All views live here ```/src/views/``` and must have prefix ```.view```, example: ```layout.view.php```
+
+View example:
+```html
+<h1><?=$title?></h1>
+<p><?=$content?></p>
+```
+Render view example:
+```php
+Description:
+Void|string render( string $file [, boolean $return = false ] )
+
+Example:
+View::factory()->render('layout');
+```
+
+## Controller
+All controllers live here ```/src/controllers/```
+
+Main controller example:
+```php
+class Controller extends abstractController {
+
+  protected $title;
+  protected $content;
+	
+  public function __construct () {
+    parent::__construct();
+  }	
+  // PAGE WHEN ACCESS DENIED
+  protected function accessDenied () {
+    View::factory()->render('accessdenied');
+  }
+  // PAGE FOR 404
+  protected function action404 () {
+    View::factory()->render('action404');
+  }
+  // LAYOUT VIEW
+  protected function render () {
+    View::factory()
+    ->bind("title",$this->title)
+    ->bind("content",$this->content)
+    ->render('layout'); // view name without prefix
+  }
+
+}
+```
+Page controller example:
+```php
+class IndexController extends Controller {
+
+  public function Index () {
+    $this->title = "Hello world!";
+    $this->content = "Here is some text for our first page";
+    // MAIN RENDER
+    $this->render();
   }
   
 }
