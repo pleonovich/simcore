@@ -47,17 +47,18 @@ class TextEdit {
 	}
 
 	public static function transLatEngUrl ( $str ) {
+		$str = strip_tags($str);
 		$str = stripslashes($str);
-		$str = htmlspecialchars($str,ENT_QUOTES);
-		$str = preg_replace('| +|', '-', $str);	
-		$str = str_replace(array("_"," - ","---","'","\""), '-', $str);
-		$str = str_replace(array("?","!",";", ",", "."), '', $str);
-		$str = transLatEng ($str);	
+		//$str = htmlspecialchars($str,ENT_QUOTES);
+		$str = preg_replace('| +|', '_', $str);
+		$str = str_replace(array(" - ","---"), '-', $str);
+		$str = str_replace(array("?","!",";", ",", ".","'","\""), '', $str);
+		$str = self::transLatEng ($str);
 		return $str;
 	}
 
 	public static function transLatEng ( $str ) {
-		$replace=array(
+		$replace = array(
 			"&"=>"",		
 			"а"=>"a","А"=>"a",
 			"б"=>"b","Б"=>"b",
@@ -94,9 +95,9 @@ class TextEdit {
 			"і"=>"i","І"=>"i",
 			"ї"=>"yi","Ї"=>"yi",
 			"є"=>"e","Є"=>"e"
-		);	
+		);
 		$str = strtolower($str);
-		return $str=iconv("UTF-8","UTF-8//IGNORE",strtr($str,$replace));
+		return $str=strtr($str,$replace);
 	}
 
 

@@ -21,17 +21,63 @@
 class DoInput
 {
     
+    public static $charset = 'UTF-8';
+
+    /**
+     * Convert special characters to HYML entities
+     *
+     * @param string $value - value to convert
+     * @param boolean $double_encode - double encode
+     * @return converted characters
+     */
+    public static function chars($value, $double_encode = true)
+    {
+        return htmlspecialchars( (string) $value, ENT_QUOTES, self::$charset, $double_encode);
+    }
+
     /**
      * Input type text
      *
      * @param string $name - input title
      * @param string $value - default value
      * @param string $extra - anything you need to put into input tag
+     * @param array $datalist - input datalist
+     * @return html input type text
+     */
+    public static function text($name, $value = null, $extra = null, $datalist=array())
+    {
+        $input = "<input type='text' id='".$name."' name='".$name."' ".$extra." value='".self::chars($value)."' >";
+        if(count($datalist)>0) {
+			$input.= "<datalist id='".$name."_list'>";
+			foreach($datalist as $v) $input.= "<option>".$v."</option>";
+			$input.= "</datalist>";
+		}
+		return $input;
+    }
+
+    /**
+     * Input type hidden
+     *
+     * @param string $name - input title
+     * @param string $value - default value
+     * @return html input type hidden
+     */
+    public static function hidden($name, $value = null)
+    {
+        return "<input type='hidden' id='".$name."' name='".$name."' value='".self::chars($value)."' >";
+    }
+    
+    /**
+     * Input type password
+     *
+     * @param string $name - input title
+     * @param string $value - default value
+     * @param string $extra - anything you need to put into input tag
      * @return html input type select
      */
-    public static function text($name, $value = null, $extra = null)
+    public static function password($name, $value = null, $extra = null)
     {
-        return "<input type='text' id='".$name."' name='".$name."' ".$extra." value='".$value."' >";
+        return "<input type='password' id='".$name."' name='".$name."' ".$extra." value='".self::chars($value)."' >";
     }
     
     /**
@@ -46,7 +92,7 @@ class DoInput
      */
     public static function textarea($name, $value = null, $cols = 50, $rows = 3, $extra = null)
     {
-        return "<textarea id='".$name."' name='".$name."' cols='".$cols."' rows='".$rows."' ".$extra." >".$value."</textarea>";
+        return "<textarea id='".$name."' name='".$name."' cols='".$cols."' rows='".$rows."' ".$extra." >".self::chars($value)."</textarea>";
     }
 
     /**
@@ -94,12 +140,13 @@ class DoInput
             $select .= "<option  value='' >".$default."</option>\n";
         }
         foreach ($options as $one) {
+            $keys = array_keys($one);
             if (in_array($value, $one)) {
                 $selected = "selected";
             } else {
                 $selected = null;
             }
-            $select .= "<option  value='".$one[0]."' ".$selected." >".$one[1]."</option>\n";
+            $select .= "<option  value='".$one[$keys[0]]."' ".$selected." >".$one[$keys[1]]."</option>\n";
         }
         $select .= "</select>";
         return $select;
@@ -161,12 +208,12 @@ class DoInput
     /**
      * Input type submit
      *
-     * @param string $name - input title
+     * @param string $title - input title
      * @param string $extra - anything you need to put into input tag
      * @return html input type submit
      */
-    public static function submit($name, $extra = null)
+    public static function submit($title, $extra = null)
     {
-        return "<input type='submit' name='".$name."' ".$extra." >";
+        return "<input type='submit' value='".$title."' ".$extra." >";
     }
 }

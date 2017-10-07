@@ -78,8 +78,14 @@ class Args
      * @return this object
      */
     public function set($name, $default = null)
-    {
-        $this->ARGS[$name] = $default;
+    {   
+        if(is_array($name)) {            
+            foreach($name as $k=>$v) {                
+                $this->ARGS[$k] = self::getOne($this->DATA, $k, $v);                
+            }
+        } else {
+            $this->ARGS[$name] = $default;
+        }        
         return $this;
     }
     
@@ -114,11 +120,23 @@ class Args
      */
     public function __get($name)
     {
-        if (isset($this->DATA[$name])) {
-            return $this->DATA[$name];
+        if (isset($this->ARGS[$name])) {
+            return $this->ARGS[$name];
         } else {
             return null;
         }
+    }
+
+    /**
+     * Unset last element of array
+     *
+     * @param array $array - input array
+     * @return array output array
+     */
+    public function unsetLast($array)
+    {
+		unset($array[count($array)-1]);
+        return $array;
     }
     
     public static function factory($DATA)

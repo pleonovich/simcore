@@ -111,7 +111,7 @@ class LOG
         self::writeLog(str_repeat("/", 10).$title.str_repeat("/", 80)."\n");
     }
     
-    private function buildTree($array, $tabsnum = 1)
+    private static function buildTree($array, $tabsnum = 1)
     {
         $log = "";
         foreach ($array as $key => $value) {
@@ -187,7 +187,7 @@ class LOG
     
     private static function writeLog($text, $extra = null, $filename = null)
     {
-        $fpath = self::filePath($filename); echo $fpath;
+        $fpath = self::filePath($filename); //echo $fpath;
         $fd = fopen($fpath, 'a+') or die("LOG: failed to write log!");        
         fwrite($fd, $text);
         fclose($fd);

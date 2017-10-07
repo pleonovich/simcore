@@ -46,6 +46,20 @@ class DoForm extends DoInput
     }
     
     /**
+     * Input type password
+     *
+     * @param string $name - input title
+     * @param string $value - default value
+     * @param string $extra - anything you need to put into input tag
+     * @return SimpleForm - this object
+     */
+    public function addPassword($name, $value = null, $extra = null)
+    {
+        $this->Form[$name] = self::password($name, $value, $extra);
+        return $this;
+    }
+    
+    /**
      * Textarea
      *
      * @param string $name - input title
@@ -143,7 +157,7 @@ class DoForm extends DoInput
      */
     public function addSubmit($name, $extra = null)
     {
-        $this->Form[$name] = self::submit($name, $extra);
+        $this->Form['submit'] = self::submit($name, $extra);
         return $this;
     }
 
