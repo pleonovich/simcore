@@ -2,11 +2,9 @@
 
 class UsersHistory extends Model {
 
-    function __construct(){
-        parent::__construct('users_history');
-    }
+    protected static $table = 'users_history';
 
-    function schema($create){
+    protected static function schema($create){
         $create
         ->id()
         ->int('user_id')

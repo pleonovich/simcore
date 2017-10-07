@@ -6,12 +6,9 @@
 class Users extends Model
 {
 
-    function __construct()
-    {
-        parent::__construct('data_userlist');
-    }
+    protected static $table = 'data_userlist';
 
-    function schema($create)
+    protected static function schema($create)
     {
         $create
         ->id()
@@ -23,7 +20,7 @@ class Users extends Model
         ->int('moderator');
     }
 
-    function insert($insert)
+    protected static function insert($insert)
     {
         $insert
         ->set('user_name', 'Admin')

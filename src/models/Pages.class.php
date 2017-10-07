@@ -5,11 +5,9 @@
 
 class Pages extends Model {    
 
-    function __construct() {
-        parent::__construct('data_pages');
-    }
+    protected static $table = 'data_pages';
 
-    function schema($create)
+    protected static function schema($create)
     {
         $create
 		->id()
@@ -18,7 +16,7 @@ class Pages extends Model {
 		->text('description');
     }
 
-    function insert($insert){
+    protected static function insert($insert){
         $insert
         ->set('title','test inserting')
         ->set('text','some text for testing')
