@@ -15,10 +15,13 @@ class Config
     const APPNAME = 'simCore';
     
     // DB CONNECTION
+    const DB_HOST = 'localhost';
     const DB_USER = 'root';
     const DB_PASS = '';
     const DB_NAME = 'simCore';
     const DB_CHARSET = 'utf8';
+    const DB_PORT = '3307';
+    const DB_SOCKET = NULL;
 }
 ```
 ## Routing
@@ -26,13 +29,17 @@ Routes config settings in index file ```index.php```
 ### For search engine friendly urls
 Description:
 ```php
-Router set ( string $pattern, string $class, string $method [, array $aliases=null ] )
+Router set ( string $pattern, string $classmethod [, array $aliases=null ] )
+Router get ( string $pattern, Clousure $function)
 ```
 Example:
 ```php
 Router::factory()
-->set('~^/$~', 'Index', 'index') // yourdomain.com
-->set('~^/id/([0-9]+)$~', 'Index', 'index', array('id')) // yourdomain.com/id/7
+->set('~^/$~', 'Index@index') // yourdomain.com
+->set('~^/id/([0-9]+)$~', 'Index@index', array('id')) // yourdomain.com/id/7
+->get('~^/func$~', function () {
+	echo "Hello world!";
+})
 ->run();
 ```
 ### For simple urls 
@@ -49,7 +56,7 @@ SimpleRouter::factory()
 ->run();
 ```
 ## Controller
-All controllers live here ```/simcore/controllers/```
+All controllers live here ```/src/controllers/```
 
 Main controller example:
 ```php
@@ -94,7 +101,7 @@ class IndexController extends Controller {
 ```
 
 ## View
-All views live here ```/simcore/views/``` and must have prefix ```.view```, example: ```main.view.php```
+All views live here ```/src/views/``` and must have prefix ```.view```, example: ```main.view.php```
 
 View example:
 ```html
@@ -103,30 +110,67 @@ View example:
 ```
 
 ## Model
-All models live here ```/simcore/models/``` and must have prefix ```.class```, example: ```Model.class.php```
+All models live here ```/src/models/``` and must have prefix ```.class```, example: ```Model.class.php```
 
 Model example:
 ```php
-class Model extends abstractModel {
+class Userlist extends Model {
 
-  function __construct ( $table ) {
-    parent::__construct($table);
-  }
+  protected static $table = 'userslist';
   
 }
+```
+Model migration example:
+```php
+class Userlist extends Model {
+
+  protected static $table = 'userslist';
+  
+  protected static function schema($create) {
+        $create
+        ->id()
+        ->varchar('user_name')
+        ->varchar('user_login')
+        ->varchar('email')
+        ->text('secret')
+        ->int('manager')
+        ->int('moderator');
+   }
+}
+```
+Run migration example:
+```php
+Userlist::migrate();
+```
+
+Insert data example:
+```php
+class Userlist extends Model {
+
+ protected static $table = 'userslist';
+  
+ protected static function insert($insert) {
+        $insert
+        ->set('user_name', 'Admin')
+        ->set('user_login', 'admin')
+        ->set('secret', '12345')
+        ->set('manager', '1')
+        ->set('moderator', '1');
+	}
+}
+```
+Run data insert:
+```php
+Userlist::insertData();
 ```
 
 Work with model:
 ```php
 class IndexController extends Controller {
 
-  public function Index () {
-    $MODEL = new Model('data_table');
-    $data = $MODEL->getById(7);
-    $this->title = $data['title'];
-    $this->content = $data['content'];
-    // MAIN RENDER
-    $this->render();
+  public function Index () {   
+    $data = Pages::getById(7);
+    print_r($data);
   }
   
 }
