@@ -59,7 +59,7 @@ SimpleRouter::factory()
 ## Model
 All models live here ```/src/models/``` and must have prefix ```.class```, example: ```Model.class.php```
 
-Model example:
+### Basic model example:
 ```php
 class Userlist extends Model {
 
@@ -67,7 +67,8 @@ class Userlist extends Model {
   
 }
 ```
-Model migration example:
+### Model migration example:
+Setup migration example:
 ```php
 class Userlist extends Model {
 
@@ -111,8 +112,29 @@ Run data insert:
 Userlist::insertData();
 ```
 
-Work with model:
+### Work with model:
+Description:
 ```php
+// returns all data from table
+Array all () 
+// returns only specific columns from table
+Array getNames ( mix ... ) 
+// returns one specific column
+Array column ( string $name ) 
+// return one specific row by id
+Array getById ( int $id ) 
+// return one row by id specific column and its value
+Array getByValue ( string $name, string $value ) 
+// return specific rows by id specific column and its value
+Array namesByValue ( Array $names, string $name, string $value ) 
+// updates data in db from POST, inserts if id not exist.
+Boolean save () 
+// removes data by id
+Boolean remove ( string $name, string $value ) 
+```
+Example:
+```php
+Model
 class IndexController extends Controller {
 
   public function Index () {   
