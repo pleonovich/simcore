@@ -7,15 +7,16 @@
  *
  */
 
-class Model extends DB {	
+class Model extends DB {
 	
-	protected static $table;
 	protected $description;
 	protected $names = array();
+	protected $conn;
 	
-	function __construct($table) {
-		self::$table = $table;
-	}
+	// function __construct($table) {
+	// 	static::$table = $table;
+	// 	$this->conn = self::conn();
+	// }
 
 	/**
      * Get all from db table
@@ -27,7 +28,25 @@ class Model extends DB {
 		try {
 			$res = self::select()
 			->names('*')
-			->from(self::$table)
+			->from(static::$table)
+			->executeAll();
+		} catch ( Exception $e ) {
+			LOG::writeException($e);
+		}
+		return $res;
+	}
+
+	/**
+     * Get names from db table
+     *
+     * @return boolean - result
+     */
+	public static function getNames () {
+		$res = false;
+		try {
+			$res = self::select()
+			->names(func_get_args())
+			->from(static::$table)
 			->executeAll();
 		} catch ( Exception $e ) {
 			LOG::writeException($e);
@@ -40,13 +59,13 @@ class Model extends DB {
      *
      * @return boolean - result
      */
-	public function __get ($name) {		
+	public static function column ($name) {
 		$res = false;
 		try {
 			$res = self::select()
 			->names($name)
-			->from(self::$table)
-			->executeRow();
+			->from(static::$table)
+			->executeCol();
 		} catch ( Exception $e ) {
 			LOG::writeException($e);
 		}
@@ -64,7 +83,7 @@ class Model extends DB {
 		try {
 			$res = self::select()
 			->names('*')
-			->from(self::$table)
+			->from(static::$table)
 			->where("id","=",$id)
 			->executeRow();
 		} catch ( Exception $e ) {
@@ -85,13 +104,39 @@ class Model extends DB {
 		try {
 			$res = self::select()
 			->names('*')
-			->from(self::$table)
+			->from(static::$table)
 			->where($name,"=",$value)
 			->executeRow();
 		} catch ( Exception $e ) {
 			LOG::writeException($e);
 		}
-		return $res;		
+		return $res;
+	}
+
+	/**
+	 * Get names from db table
+	 *
+	 * @param string $names - select columns
+     * @param string $name - column name
+     * @param string $value - value
+     * @return boolean - result
+     */
+	 public static function namesByValue () {
+		$args = func_get_args();
+		$names = array_shift($args);
+		$name = array_shift($args);
+		$value = array_shift($args);
+		$res = false;
+		try {
+			$res = self::select()
+			->names($names)
+			->from(static::$table)
+			->where($name,"=",$value)
+			->executeAll();
+		} catch ( Exception $e ) {
+			LOG::writeException($e);
+		}
+		return $res;
 	}
 	
 	/**
@@ -103,39 +148,59 @@ class Model extends DB {
 		$res = false;
 		try {
 			$res = self::update()
-			->table(self::$table)
+			->table(static::$table)
 			->setPOST()
-			->executeODKU();			
+			->executeODKU();
+		} catch ( Exception $e ) {
+			LOG::writeException($e);
+		}
+		return $res;
+	}
+	
+	/**
+     * Delete data by value
+     *
+     * @return boolean - result
+     */
+	public static function remove ( $name, $value ) {
+		$res = false;
+		try {
+			$res = self::delete()
+			->from(static::$table)
+			->where($name, $value)
+			->execute();
 		} catch ( Exception $e ) {
 			LOG::writeException($e);
 		}
 		return $res;
 	}
 
-	protected function schema ($create){
+	protected static function schema ($create){
 		$create = false;
 	}
 
-	public function migrate () {
-		$create = DB::create()->table(self::$table);
-		$this->schema($create);
+	public static function migrate () {
+		$create = self::create()->table(static::$table);
+		static::schema($create);
 		if(!$create) return false;
 		if(is_a($create,'DBcreate')) return $create->execute();
 		return false;
 	}
 
-	protected function insert ($insert) {
+	protected static function setData ($insert) {
 		$insert = false;
 	}
 
-	public function insertData () {
-		$insert = DB::insert()->into(self::$table);
-		$this->insert($insert);
+	public static function insertData () {
+		$insert = self::insert()->into(static::$table);
+		static::setData($insert);
 		if(!$insert) return false;
-		return $insert->execute();
-	} 
+		if(is_a($insert,'DBinsert')) return $insert->execute();
+		return false;
+	}
 	
+	public static function factory ( $table ) {
+		return new Model($table);
+	}
 	
 }
-
-?>	

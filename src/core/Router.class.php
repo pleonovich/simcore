@@ -19,9 +19,10 @@ class Router
     
     private $url_path;
     private $routes = array();
-    public $module = 'Not_Found';
-    public $action = 'main';
+    public $module = 'NotFoundController';
+    public $action = 'index';
     public $params = array();
+    public $function = NULL;
     
     function __construct()
     {
@@ -37,15 +38,31 @@ class Router
      * @param array $aliases - url params
      * @return this object
      */
-    public function set($pattern, $class, $method, array $aliases = null)
+    public function set($pattern, $classmethod, array $aliases = null)
     {
         $next = count($this->routes);
+        $cm = explode('@',$classmethod);
         $this->routes[$next]['pattern'] = $pattern;
-        $this->routes[$next]['class'] = $class;
-        $this->routes[$next]['method'] = $method;
+        $this->routes[$next]['class'] = $cm[0];
+        $this->routes[$next]['method'] = $cm[1];
         if ($aliases!=null) {
             $this->routes[$next]['aliases'] = $aliases;
         }
+        return $this;
+    }
+
+    /**
+     * Set route function
+     *
+     * @param string $pattern - url regular expression
+     * @param Closure $function - controller function
+     * @return this object
+     */
+    public function get($pattern, Closure $function)
+    {
+        $next = count($this->routes);
+        $this->routes[$next]['pattern'] = $pattern;
+        $this->routes[$next]['function'] = $function;
         return $this;
     }
 
@@ -54,12 +71,16 @@ class Router
      *
      * @return this object
      */
-    public function init()
+    private function init()
     {
         foreach ($this->routes as $map) {
             if (preg_match($map['pattern'], $this->url_path, $matches)) {
-            //var_dump($matches);
+            
                 array_shift($matches);
+                if(isset($map['function'])) {
+                    $this->function = $map['function'];
+                    return $this;
+                }
                 foreach ($matches as $index => $value) {
                     $this->params[$map['aliases'][$index]] = $value;
                 }
@@ -79,6 +100,10 @@ class Router
         $this->init();
         if (count($this->params)>0) {
             $_GET = $this->params;
+        }
+        if(is_callable($this->function)) {
+            $func = $this->function;
+            return $func();
         }
         if (class_exists($this->module)) {
             $MODULE = new $this->module();

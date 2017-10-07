@@ -38,9 +38,9 @@ require_once('DBquery.class.php');
 class DBupdate extends DBquery
 {
 
-    function __construct()
+    function __construct($table)
     {
-        parent::__construct();
+        parent::__construct($table);
     }
 
 	/**
@@ -102,7 +102,7 @@ class DBupdate extends DBquery
     public function setPOST()
     {
         $this->initNames();
-        $diff = array_diff($_POST, $this->values);        
+        $diff = array_intersect_key($_POST, $this->values);
         $this->setAll($diff);
         return $this;
     }
@@ -129,7 +129,7 @@ class DBupdate extends DBquery
      * Render sql query with ON DUPLICATE KEY UPDATE option
      */
     public function renderODKU()
-    {
+    {   
         $query = $this->db->parse(" INSERT INTO ?n ", $this->table);
         $query.= $this->db->parse(" ( ?p ) VALUES ( ?a ) ", implode(",", $this->names), $this->values);
         $query.= " ON DUPLICATE KEY UPDATE ";
@@ -151,7 +151,7 @@ class DBupdate extends DBquery
     public function executeODKU()
     {
         $query = $this->renderODKU();
-        return $this->db->query($query);
+        return $this->db->query(' ?p ', $query);
     }
 
     public static function factory()

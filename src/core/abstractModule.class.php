@@ -96,9 +96,13 @@ abstract class AbstractModule
     }
     
     final public function __toString()
-    {
+    {   
+        try {
         $this->preRender();
         return $this->view->bindArray($this->getProperties())->render($this->getTmplFile(), true);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
     }
     
     protected function preRender()

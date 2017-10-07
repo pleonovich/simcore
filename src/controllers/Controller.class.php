@@ -19,7 +19,9 @@ class Controller extends abstractController {
 		View::factory()->render('action404');
 	}
 	
-	protected function render ( $content ) {
+	protected function render ( $content=NULL ) {
+		$this->response->Status(301);
+		$this->response->render();
 		View::factory()
 		->bind("content",$content)
 		->render('layout');

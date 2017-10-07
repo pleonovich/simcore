@@ -12,7 +12,7 @@
 
 class View
 {
-    
+    protected static $_global_params = array();
     private $dir_tmpl = "src/views";
     private $params = array();
 
@@ -39,6 +39,18 @@ class View
     {
         $this->params[$name] = $value;
         return $this;
+    }
+
+    /**
+     * Bind globalvariable to view
+     *
+     * @param string $name - variable name
+     * @param string|int|array|object $value - variable value
+     * @return View - this object
+     */
+    public static function bind_global($name, $value)
+    {
+        self::$_global_params[$name] = $value;        
     }
     
 	/**

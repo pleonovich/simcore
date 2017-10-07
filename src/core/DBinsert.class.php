@@ -38,9 +38,9 @@ require_once('DBupdate.class.php');
 class DBinsert extends DBupdate
 {
 
-    function __construct()
+    function __construct($table)
     {
-        parent::__construct();
+        parent::__construct($table);
     }
 
 	/**

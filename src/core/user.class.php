@@ -6,13 +6,15 @@
 class USER
 {
     
-    const TABLE = "data_userlist";
-    const HISTORY_TABLE = "data_userhistory";
+    protected $table = "site_users";
+    protected $history_table = "auth_history";
 
-    protected $conn;    
-    protected $cookiename;
-    protected $onManager = false;
-    protected $onModerator = false;
+	public $onAdmin = false;
+	public $onManager = false;
+    public $onModerator = false;
+    
+    protected $conn; 
+    protected $sessionname;
     
     public $id = 0;
     public $name = "Guest";
@@ -22,9 +24,13 @@ class USER
     
     function __construct(SafeMySQL $db)
     {
+        if(session_id() == '') {
+            session_start();
+        }
         $this->conn = $db;
-        $this->cookiename = "__".Config::APPID;
+        $this->sessionname = "__".Config::APPID;
         $this->init_userip();
+        $this->isAuth();
     }
     
     /**
@@ -45,15 +51,16 @@ class USER
      */
     public function init_user()
     {
-        if (!isset($_COOKIE[$this->cookiename])) {
+        if (!isset($_SESSION[$this->sessionname])) {
             return false;
         }
         $query = " SELECT * FROM ?n WHERE secret=?s ";
-        $result = $this->conn->getRow($query, self::TABLE, $_COOKIE[$this->cookiename]);
+        $result = $this->conn->getRow($query, $this->table, $_SESSION[$this->sessionname]);
         if ($result) {
-            $this->id = $result['id'];
+            $this->id = $result['user_id'];
             $this->name = $result['user_name'];
             $this->info = $result;
+            $this->onAdmin = $result['admin'];
             $this->onManager = $result['manager'];
             $this->onModerator = $result['moderator'];
         } else {
@@ -76,10 +83,10 @@ class USER
      */
     public function isAuth()
     {
-        if (!isset($_COOKIE[$this->cookiename])) {
+        if (!isset($_SESSION[$this->sessionname])) {
             return false;
         }
-        $result = $this->conn->getOne(" SELECT COUNT(*) FROM ?n WHERE secret=?s ", self::TABLE, $_COOKIE[$this->cookiename]);
+        $result = $this->conn->getOne(" SELECT COUNT(*) FROM ?n WHERE secret=?s ", $this->table, $_SESSION[$this->sessionname]);
         if ($result) {
             $this->init_user();
         }
@@ -96,10 +103,16 @@ class USER
         $login = self::clean($login);
         $password = self::clean($password);
         $hash = $this->genHash($login, $password);   //echo "hash: ".$hash;
-        $result = $this->conn->getOne(" SELECT COUNT(*) FROM ?n WHERE user_login=?s AND secret=?s ", self::TABLE, $login, $hash);
+        try {
+            $result = $this->conn->getOne(" SELECT COUNT(*) FROM ?n WHERE user_login=?s AND secret=?s ", $this->table, $login, $hash);
+        } catch (Exception $e) {
+            LOG::writeException($e);
+        }
         if ($result) {
-            setcookie($this->cookiename, $hash, time()+86400, '/');
-            $this->set_auth_history();
+            //setcookie($this->sessionname, $hash, time()+86400, '/');
+            $_SESSION[$this->sessionname] = $hash;
+            $this->setAuthHistory();
+            $this->init_user();
         }
         return $result;
     }
@@ -123,8 +136,10 @@ class USER
      */
     public function logout()
     {
-        if (isset($_COOKIE[$this->cookiename])) {
-            setcookie($this->cookiename, "", time()-3600, '/');
+        if (isset($_SESSION[$this->sessionname])) {
+            //setcookie($this->sessionname, "", time()-3600, '/');
+            unset($_SESSION[$this->sessionname]);
+            session_destroy();
         } else {
             return true;
         }
@@ -135,10 +150,10 @@ class USER
      *
      * @return boolean
      */
-    private function set_auth_history()
+    private function setAuthHistory()
     {
         $query = "INSERT INTO ?n (user_id, user_ip, login_date, login_time) VALUES (?s, ?s, CURDATE(), CURTIME())";
-        $this->conn->query($query, self::HISTORY_TABLE, $this->id, $this->ip);
+        $this->conn->query($query, $this->history_table, $this->id, $this->ip);
     }
     
     /**
@@ -146,9 +161,19 @@ class USER
      *
      * @return boolean
      */
-    public function get_auth_history()
+    public function getAuthHistory()
     {
-        return $this->conn->getAll("SELECT * FROM ?n ORDER BY login_date,login_time", self::HISTORY_TABLE);
+        return $this->conn->getAll("SELECT user_name,user_login,user_ip,login_date,login_time FROM ?n LEFT JOIN ?n USING(user_id) ORDER BY login_date,login_time", $this->history_table, $this->table);
+    }
+    
+    /**
+     * Check if user is isset
+     *
+     * @return boolean
+     */
+    public function _isset( $name, $login, $email )
+    {
+        return $this->conn->getOne(" SELECT COUNT(user_name) FROM ?n WHERE user_name = ?s OR user_login = ?s OR email = ?s ", $this->table, $name, $login, $email);
     }
     
     /**
@@ -156,7 +181,7 @@ class USER
      *
      * @return string - hash code
      */
-    private function genHash($login, $password)
+     final public function genHash($login, $password)
     {
         $hash = md5(md5(trim($login)));
         $hash.= md5(md5(trim($password)));
@@ -173,7 +198,13 @@ class USER
     {
         $secret = $this->genHash($login, $password);
         $query = "INSERT INTO ?n (user_name, user_login, email, secret) VALUES (?s, ?s, ?s, ?s)";
-        $this->conn->query($query, self::TABLE, $user_name, $login, $email, $secret);
+        $res = false;
+        try {
+            $res = $this->conn->query($query, $this->table, $user_name, $login, $email, $secret);
+        } catch (Exception $e) {
+            LOG::writeException($e);
+        }
+        return $res;
     }
 
     /**
@@ -197,7 +228,7 @@ class USER
             manager INT(1) NOT NULL DEFAULT 0,
             moderator INT(1) NOT NULL DEFAULT 0
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;";
-        $result = $this->conn->query($query, self::TABLE);
+        $result = $this->conn->query($query, $this->table);
         $query = "CREATE TABLE IF NOT EXISTS ?n (
             id INT(11) NOT NULL AUTO_INCREMENT  PRIMARY KEY,
             user_id INT(11) NOT NULL DEFAULT 0,
@@ -205,6 +236,6 @@ class USER
             login_date DATE NOT NULL,
             login_time TIME NOT NULL 
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;";
-        if($result) return $this->conn->query($query, self::HISTORY_TABLE);
+        if($result) return $this->conn->query($query, $this->history_table);
     }
 }

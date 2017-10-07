@@ -19,6 +19,7 @@ abstract class DBquery
     protected $description;
     protected $names;
     protected $values;
+    protected $join = array();
     protected $where = array();
     protected $operators = array('=','!=','<>','>','<','>=','<=','LIKE','IS','IN','NOT IN');
     protected $types = array('AND','OR');
@@ -27,9 +28,10 @@ abstract class DBquery
     protected $orderByDesc = false;
     protected $limit = array();
 
-    function __construct()
-    {
-         $this->connect();
+    function __construct( $table=null )
+    {   
+        $this->table = $table;
+        $this->connect();
     }
 
     /**
@@ -60,26 +62,73 @@ abstract class DBquery
         foreach ($this->description as $one) {
             $this->names[] = $one["Field"];
             $this->values[$one["Field"]] = null;
-        }
+        }        
     }
 
     protected function checkPost()
     {
         $this->initNames();
-        return array_diff($_POST, $this->values);
-    }
-
-    protected function addWhere($name, $operator, $value, $type = null)
-    {
-        $next = count($this->where);
-        $this->where[$next]['name'] = $name;
-        $this->where[$next]['operator'] = $operator;
-        $this->where[$next]['value'] = $value;
-        if ($type!==null) {
-            $this->where[$next]['type'] = $type;
-        }
+        return array_intersect_key($_POST, $this->values);
     }
     
+    /**
+     * JOIN
+     */
+
+    protected function addJoin ( $type, $table, $using ) {
+        $next = count($this->where);
+        $this->join[$next]['type'] = $type;
+        $this->join[$next]['table'] = $table;
+        $this->join[$next]['using'] = $using;
+    }
+
+    public function leftJoin ($table, $using) {
+        $this->addJoin('LEFT OUTER', $table, $using);
+        return $this;
+    }
+
+    public function rightJoin ($table, $using) {
+        $this->addJoin('RIGHT OUTER', $table, $using);
+        return $this;
+    }
+
+    public function innerJoin ($table, $using) {
+        $this->addJoin('INNER', $table, $using);
+        return $this;
+    }
+
+    public function crossJoin ($table, $using) {
+        $this->addJoin('CROSS', $table, $using);
+        return $this;
+    }
+
+    protected function getJoinQuery()
+    {
+        if (count($this->join)==0) {
+            return null;
+        }
+        $query = " ";
+        foreach ($this->join as $j) {
+            $query.= $this->db->parse(" ?p JOIN ?n USING(?n) ", $j['type'], $j['table'], $j['using']);
+        }
+        return $query;
+    }
+
+    /**
+     * WHERE
+     */
+
+     protected function addWhere($name, $operator, $value, $type = null)
+     {
+         $next = count($this->where);
+         $this->where[$next]['name'] = $name;
+         $this->where[$next]['operator'] = $operator;
+         $this->where[$next]['value'] = $value;
+         if ($type!==null) {
+             $this->where[$next]['type'] = $type;
+        }
+    }
+
     public function where($name, $operator, $value = null)
     {
         if (!in_array($operator, $this->operators)) {
@@ -118,6 +167,14 @@ abstract class DBquery
         }
         return $query;
     }
+
+    /**
+     * HAVING
+     */
+
+    /**
+     * ORDER BY
+     */
 
     public function orderBy($names, $desc = false)
     {
@@ -164,6 +221,10 @@ abstract class DBquery
         return null;
     }
     
+    /**
+     * LIMIT
+     */
+
     protected function getLimitQuery()
     {
         if (count($this->limit)>0) {
@@ -190,11 +251,12 @@ abstract class DBquery
     public function execute()
     {
         $query = $this->render();
-        return $this->db->query($query);
+        return $this->db->query(' ?p ', $query);
     }
 
     public function __toString()
     {
         return $this->render();
     }
+    
 }

@@ -29,9 +29,9 @@ class DBcreate extends DBquery
     private $charset = 'utf8';
     private $collate = 'utf8_general_ci';
 
-    function __construct()
+    function __construct( $table )
     {
-        parent::__construct();
+        parent::__construct($table);
     }
 
     /**
@@ -206,7 +206,7 @@ class DBcreate extends DBquery
             $q[] = $s;
         }
         $query.= " (\n".implode(",\n", $q)." \n) CHARACTER SET ".$this->charset." COLLATE ".$this->collate."; ";
-        $query.= $this->getWhereQuery();        
+        $query.= $this->getWhereQuery(); 
         return $query;
     }
 

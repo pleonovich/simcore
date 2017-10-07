@@ -44,10 +44,12 @@ require_once('DBselect.class.php');
 require_once('DBinsert.class.php');
 require_once('DBupdate.class.php');
 require_once('DBcreate.class.php');
-//require_once('DBdelete.class.php');
+require_once('DBdelete.class.php');
 
 class DB
 {
+    protected static $table;
+
     /**
      * Select, insert , update or create
      *
@@ -60,7 +62,7 @@ class DB
             if ($name===$f) {
                 $classname = 'DB'.$f;
                 if (class_exists($classname)) {
-                    return new $classname();
+                    return new $classname(static::$table);
                 } else {
                     die("Error! $classname class doesn`t found");
                 }
@@ -69,6 +71,6 @@ class DB
     }
 
     public static function conn () {
-        return DBquery::factory()->connect();
+        return DBSelect::factory()->connect();
     }
 }

@@ -30,8 +30,8 @@ class SefURL
         foreach ($this->GET as $key => $value) {
             $this->URL_DATA[$key]=$value;
         }
-        $this->DOMEN_NAME = $_SERVER['HTTP_HOST'];
-        $this->HTTP_HOST = "http://".$_SERVER['HTTP_HOST'];
+        $this->DOMEN_NAME = Config::DOMEN_NAME;
+        $this->HTTP_HOST = Config::HTTP_HOST;
     }
     
 	/**
@@ -80,7 +80,7 @@ class SefURL
             	$gen_url[] = $value;
             }
         }
-        return $this->HTTP_HOST."/".implode("/", $gen_url)."/";
+        return $this->HTTP_HOST."/".implode("/", $gen_url);
     }
 
 	/**

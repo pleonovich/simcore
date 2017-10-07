@@ -19,8 +19,11 @@ class Bootstrap
         'src/objects/%s.class.php',
         'src/lib/%s.class.php',
         'src/models/%s.class.php',
-       'src/modules/%s.class.php',
+        'src/modules/%s.class.php',
         'src/controllers/%s.class.php',
+        'admin/controllers/%s.class.php',
+        'admin/models/%s.class.php',
+        'admin/lib/%s.class.php'
         );
     
     function __construct()
@@ -64,7 +67,7 @@ class Bootstrap
      */
     private function clearLog()
     {
-        $fd = fopen($_SERVER['DOCUMENT_ROOT']."/src/log/autoloader_log.txt", 'a+') or die("Autoloader: failed to write log!");
+        $fd = fopen($_SERVER['DOCUMENT_ROOT']."/src/log/autoloader_log.txt", 'w') or die("Autoloader: failed to write log!");
         fwrite($fd, "");
         fclose($fd);
     }

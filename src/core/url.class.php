@@ -44,8 +44,8 @@ class URL
         foreach ($this->GET as $key => $value) {
             $this->URL_DATA[$key] = $value;
         }
-        $this->DOMEN_NAME = $_SERVER['HTTP_HOST'];
-        $this->HTTP_HOST = "http://".$_SERVER['HTTP_HOST'];
+        $this->DOMEN_NAME = Config::DOMEN_NAME;
+        $this->HTTP_HOST = Config::HTTP_HOST;
     }
     
 	/**
@@ -75,9 +75,9 @@ class URL
      * @param boolean $new - ignore params from current GET request
      * @return string - updated url
      */
-    private function render($url, $except = array(), $new = false)
+    private function render($url, $except = array(), $new = false, $hostname = true)
     {
-        $gen_url = $this->HTTP_HOST."/".$this->FILE;
+        $gen_url = ($hostname) ? $this->HTTP_HOST."/".$this->FILE : $this->FILE ;
         $params = array();
         if (!is_array($except)) {
             $except = array($except);
@@ -111,6 +111,21 @@ class URL
         return $this->render($url, null, true);
     }
 
+	/**
+     * Get new url
+     *
+     * @param array $url - url data
+     * @return string - rendered url
+     */
+    public function getParams($replace = null, $except = null)
+    {   
+        $url = $this->URL_DATA;
+        if ($replace!=null) {
+            $url = $this->replace($url, $replace);
+        }
+        return $this->render($url, $except, false, false);
+    }
+
     /**
      * Get url
      *
@@ -126,4 +141,5 @@ class URL
         }
         return $this->render($url, $except);
     }
+
 }
