@@ -148,18 +148,100 @@ class IndexController extends Controller {
 ## View
 All views live here ```/src/views/``` and must have prefix ```.view```, example: ```layout.view.php```
 
-View example:
+### Basic:
 ```html
+// Set variables
+{{var myvar='hello'}}
+//The same as:
+<?php $name='hello'?>
+
+// Print variables
+<h1>{{$title}}</h1>
+//The same as:
 <h1><?=$title?></h1>
-<p><?=$content?></p>
+
+// Arrays
+{{$array[index]}}
+//The same as:
+<?=$array['index']}}
+
+// Objects
+{{$object->var}}
+// Or
+{{$object.var}}
+//The same as:
+<?=$object->var?>
+
+// Call static constants
+{{Class::const}}
+//The same as:
+<?php Class::const ?>
 ```
-Render view example:
+### Foreach loops
+```html
+{{foreach $array as $one}}
+<p>{{$one}}</p>
+{{/foreach}}
+
+// The same as:
+<?php foreach ($array as $one): ?>
+<p><?=$one?></p>
+<?php endforeach; ?>
+```
+### For loops
+```html
+{{for ($a=1;$a<7;$a++)}}
+<p>{{$a}}</p>
+{{/for}}
+
+// The same as:
+<?php for($a=1;$a<7;$a++): ?>
+<p><?=$a?></p>
+<?php endfor; ?>
+```
+### If statement
+```html
+{{if $var}}
+<p>true</p>
+{{else}}
+<p>false</p>
+{{/if}}
+
+// The same as:
+<?php if($var): ?>
+<p>true</p>
+<?php else: ?>
+<p>false</p>
+<?php endif; ?>
+```
+### Include view
+```php
+{{include viewname}}
+```
+### Blocks and extends
+```php
+#src/views/layout.view.php
+<h1>Title</h1>
+{{include block content}}
+
+#src/views/home.view.php
+{{extends layout}}
+{{block content}}
+<p>Here some text</p>
+{{/block content}}
+```
+
+### Render view example:
 ```php
 Description:
 Void|string render( string $file [, boolean $return = false ] )
 
 Example:
-View::factory()->render('layout');
+View::factory()->render('home');
+
+Output:
+<h1>Title</h1>
+<p>Here some text</p>
 ```
 
 ## Controller
