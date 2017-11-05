@@ -29,21 +29,21 @@ class Response {
     );
     private $headers = array(
         "Status" => 200,
-        "Date" => NULL,
-        "LastModified" => NULL,
+        "Date" => false,
+        "LastModified" => false,
         "ContentType" => 'text/html',
-        "Location" => NULL
+        "Location" => false
     );
 
     function __construct() {}
 
     public function render() {
-        if($this->Date!==NULL) header("Date: ".$this->Date);
+        if($this->Date!==false) header("Date: ".gmdate("D, d M Y H:i:s \G\M\T", $this->Date));
         $code = $this->headers['Status'];
         header("HTTP/1.1 ".$code." ".$this->status[$code]);
-        if($this->LastModified!==NULL) header("Last-Modified: ".$this->LastModified);
+        if($this->LastModified!==false) header("Last-Modified: ".gmdate("D, d M Y H:i:s \G\M\T",$this->LastModified));
         header("Content-Type: ".$this->ContentType);
-        if($this->Location!==NULL) header("Location: ".$this->Location);
+        if($this->Location!==false) header("Location: ".$this->Location);
     }
 
     public function __get($name){
@@ -51,11 +51,15 @@ class Response {
         else return NULL;
     }
 
+    public function Status($code) {
+        if(isset($this->status[$code])) $this->headers['Status'] = $code;
+        else throw new Exception('Error! Status not found');
+    }
+
     public function __call($name, $params) {
-        if(isset($this->status[$params[0]])) {
-            if(isset($this->headers[$name])) $this->headers[$name] = $params[0];
-            else die('Error! Header not found');
-        } else die('Error! Status not found');
+        if(isset($this->headers[$name])) {
+            $this->headers[$name] =  $params[0];
+        } else throw new Exception('Error! Header not found');
         return $this;
     }
 

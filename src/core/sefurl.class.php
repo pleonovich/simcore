@@ -1,9 +1,12 @@
 <?php
 /**
- * SEF URL CLASS 1.0.0
- *
- * @author leonovich.pavel@gmail.com
+ * SEF URL CLASS
+ * =============
  * Simple way to work with search engine friendly urls
+ * 
+ * @author leonovich.pavel@gmail.com
+ * @version 1.0.0
+ * 
  */
 
 class SefURL

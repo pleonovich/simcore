@@ -1,9 +1,11 @@
 <?php
 /**
- * DBQUERY CLASS 1.0.1
- *
- * @author leonovich.pavel@gmail.com
+ * DBQUERY CLASS
+ * =============
  * DBquery is simple ORM object-relational queries mapper, using SafeMySQL.
+ * 
+ * @author leonovich.pavel@gmail.com
+ * @version 1.0.1
  *
  * Requirements:
  * https://github.com/colshrapnel/safemysql
@@ -41,13 +43,10 @@ abstract class DBquery
     {
         if ($this->db===null) {
             $this->db = new SafeMySQL(array(
-            'host'    => Config::DB_HOST,
             'user'    => Config::DB_USER,
             'pass'    => Config::DB_PASS,
             'db'      => Config::DB_NAME,
-            'charset' => Config::DB_CHARSET,
-            'port'    => Config::DB_PORT,
-            'socket'  => Config::DB_SOCKET
+            'charset' => Config::DB_CHARSET
             ));
         } else {
             return $this->db;

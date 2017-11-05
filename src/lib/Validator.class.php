@@ -46,6 +46,7 @@ class Validator {
     }
 
     private static function clean ( $text ) {        
+        $text = trim($text);
         $text = strip_tags($text);
         $text = htmlentities($text, ENT_QUOTES, "UTF-8");
         $text = htmlspecialchars($text, ENT_QUOTES);
@@ -65,7 +66,7 @@ class Validator {
             } elseif(strlen($text)<4) {
                 $this->errors[] = " Поле '{$label}' слишком короткое ";
             } else {
-                if(!preg_match('/^[A-Za-zА-Яа-я0-9_!?.,]{4,'.$length.'}/iu', $text, $match)) {
+                if(!preg_match('/^[A-Za-zА-Яа-я0-9_!?.,;:\(\)\"\`\'\s]{4,'.$length.'}/iu', $text, $match)) {
                     $this->errors[] = " Поле '{$label}' содержит запрещенные символы  ";
                 }
             }

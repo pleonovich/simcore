@@ -132,6 +132,15 @@ class DBselect extends DBquery
         $query = $this->render();
         return $this->db->getCol($query);
     }
+
+	/**
+     * Execute one value
+     */
+    public function executeOne()
+    {
+        $query = $this->render();
+        return $this->db->getOne($query);
+    }
     	
     public static function factory()
     {

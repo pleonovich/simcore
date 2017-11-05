@@ -1,9 +1,14 @@
 <?php
 /**
- * USER CLASS 1.0.0
+ * USER CLASS
+ * ==========
+ * 
+ * @author leonovich.pavel@gmail.com
+ * @version 1.0.0
+ * 
  */
 
-class USER
+class User
 {
     
     protected $table = "site_users";
@@ -66,6 +71,11 @@ class USER
         } else {
             return false;
         }
+    }
+
+    public function __get ($name) {
+        if(isset($this->info[$name])) return $this->info[$name];
+        else return NULL;
     }
     
     /**

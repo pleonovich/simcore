@@ -1,8 +1,10 @@
 <?php
 /**
- * URL CLASS 1.0.0
- *
+ * URL CLASS
+ * ==========
+ * 
  * @author leonovich.pavel@gmail.com
+ * @version 1.0.0
  * Simple way to work with urls
  *
  * $url = new URL();

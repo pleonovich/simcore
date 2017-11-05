@@ -46,6 +46,19 @@ class DoForm extends DoInput
     }
     
     /**
+     * Input type hidden
+     *
+     * @param string $name - input title
+     * @param string $value - default value
+     * @return SimpleForm - this object
+     */
+    public function addHidden($name, $value = null)
+    {
+        $this->Form[$name] = self::hidden($name, $value);
+        return $this;
+    }
+    
+    /**
      * Input type password
      *
      * @param string $name - input title

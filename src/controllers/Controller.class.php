@@ -5,8 +5,6 @@
 
 class Controller extends abstractController {
 	
-	protected $content = null;
-	
 	public function __construct () {
 		parent::__construct();
 	}
@@ -19,12 +17,6 @@ class Controller extends abstractController {
 		View::factory()->render('action404');
 	}
 	
-	protected function render ( $content=NULL ) {
-		$this->response->Status(301);
-		$this->response->render();
-		View::factory()
-		->bind("content",$content)
-		->render('layout');
-	}
+	protected function render ( $content=NULL ) {}
 
 }

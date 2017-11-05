@@ -2,12 +2,12 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>{{$title}}</title>
+	<title><?=$title?></title>
 </head>
 <body>
 
 <center>
-	{{include block content}}
+<h1><?=$title?></h1>
 </center>
 
 </body>

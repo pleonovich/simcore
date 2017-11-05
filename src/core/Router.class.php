@@ -52,17 +52,24 @@ class Router
     }
 
     /**
-     * Set route function
+     * Set route
      *
      * @param string $pattern - url regular expression
-     * @param Closure $function - controller function
+     * @param string $class - controller name
+     * @param string $method - controller method name
+     * @param array $aliases - url params
      * @return this object
      */
-    public function get($pattern, Closure $function)
+    public function get($pattern, Closure $function, array $aliases = null)
     {
         $next = count($this->routes);
         $this->routes[$next]['pattern'] = $pattern;
         $this->routes[$next]['function'] = $function;
+        $this->routes[$next]['class'] = '';
+        $this->routes[$next]['method'] = '';
+        if ($aliases!=null) {
+            $this->routes[$next]['aliases'] = $aliases;
+        }
         return $this;
     }
 
@@ -79,7 +86,6 @@ class Router
                 array_shift($matches);
                 if(isset($map['function'])) {
                     $this->function = $map['function'];
-                    return $this;
                 }
                 foreach ($matches as $index => $value) {
                     $this->params[$map['aliases'][$index]] = $value;
@@ -103,7 +109,7 @@ class Router
         }
         if(is_callable($this->function)) {
             $func = $this->function;
-            return $func();
+            return $func($_GET);
         }
         if (class_exists($this->module)) {
             $MODULE = new $this->module();

@@ -4,6 +4,10 @@ class Config
 {
 
     // MAIN
+    const FILES_ENCODING = 'cp1251';
+	const PROTOCOL = 'http://';
+	const DOMEN_NAME = 'simcore:8080';
+    const HTTP_HOST = 'http://simcore:8080';
     const APPID = 'simCore';
     const APPNAME = 'simCore';
     

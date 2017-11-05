@@ -114,6 +114,39 @@ class Model extends DB {
 	}
 
 	/**
+     * Count by value
+     *
+     * @param string $name - column name
+     * @param string $value - value
+     * @return array - result
+     */
+	public static function countByValue ( $name, $value ) {
+		$res = false;
+		try {
+			$res = self::select()
+			->names('COUNT(*)')
+			->from(static::$table)
+			->where($name,"=",$value)
+			->executeOne();
+		} catch ( Exception $e ) {
+			LOG::writeException($e);
+		}
+		return $res;
+	}
+
+	/**
+     * Isset by value
+     *
+     * @param string $name - column name
+     * @param string $value - value
+     * @return array - result
+     */
+	public static function _isset ( $name, $value ) {
+		$count = self::countByValue($name, $value);
+		return ($count>0) ? true : false;
+	}
+
+	/**
 	 * Get names from db table
 	 *
 	 * @param string $names - select columns

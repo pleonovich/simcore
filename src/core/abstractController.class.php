@@ -14,8 +14,8 @@ abstract class abstractController {
 	
 	public function __construct () {
 		//if (!session_id()) session_start();
-		define('DOMEN_NAME',$_SERVER['HTTP_HOST']);
-		define('HOST_NAME',"//".$_SERVER['HTTP_HOST']);
+		if(!defined('DOMEN_NAME')) define('DOMEN_NAME',$_SERVER['HTTP_HOST']);
+		if(!defined('HOST_NAME')) define('HOST_NAME',"//".$_SERVER['HTTP_HOST']);
 		$opts = array(
 			'host'    => Config::DB_HOST,
 			'user'    => Config::DB_USER,
@@ -30,7 +30,7 @@ abstract class abstractController {
 		$this->conn = new SafeMySQL($opts);
 		$this->user = new User($this->conn);
 		$this->url = new URL();
-		$this->sefurl = new SefURL();	
+		$this->sefurl = new SefURL();
 	}
 
 	public function isAccess () {
