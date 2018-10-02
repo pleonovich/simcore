@@ -111,7 +111,7 @@ class View
      * @param boolean $return - return or echo rendered view 
      * @return string - rendered view 
      */
-    public function render($file, $return = false)
+    public function render($file, $return = true)
     {
         $this->template = $_SERVER['DOCUMENT_ROOT']."/".self::$dir_tmpl."/".$file.".view.php";
         $this->cache = $_SERVER['DOCUMENT_ROOT']."/".self::$dir_tmpl."/cache/".$file.".view.php";

@@ -10,12 +10,14 @@
  * $Response->LastModified(gmdate("D, d M Y H:i:s", time()));
  * $Response->ContentType('text/html');
  *
- */
+ */ 
 
 class Response {
-    
+
     private $status = array(
         200 => "OK",
+        201 => "Created",
+        204 => "No Content",
         301 => "Moved Permanently",
         307 => "Temporary Redirect",
         308 => "Permanent Redirect",
@@ -35,15 +37,21 @@ class Response {
         "Location" => false
     );
 
-    function __construct() {}
+    function __construct() {
+    }
 
-    public function render() {
+    public function send($body = null) {
         if($this->Date!==false) header("Date: ".gmdate("D, d M Y H:i:s \G\M\T", $this->Date));
         $code = $this->headers['Status'];
         header("HTTP/1.1 ".$code." ".$this->status[$code]);
         if($this->LastModified!==false) header("Last-Modified: ".gmdate("D, d M Y H:i:s \G\M\T",$this->LastModified));
         header("Content-Type: ".$this->ContentType);
         if($this->Location!==false) header("Location: ".$this->Location);
+        if ($this->headers['ContentType'] == "application/json") {
+            $body = json_encode($body);
+            exit($body);
+        }
+        exit($body);
     }
 
     public function __get($name){
@@ -51,9 +59,10 @@ class Response {
         else return NULL;
     }
 
-    public function Status($code) {
+    public function status($code) {
         if(isset($this->status[$code])) $this->headers['Status'] = $code;
         else throw new Exception('Error! Status not found');
+        return $this;
     }
 
     public function __call($name, $params) {
@@ -62,5 +71,4 @@ class Response {
         } else throw new Exception('Error! Header not found');
         return $this;
     }
-
 }

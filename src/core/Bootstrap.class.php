@@ -14,7 +14,7 @@ spl_autoload_register(array($bootstrap, 'autoload'));
 
 class Bootstrap
 {
-
+    
     private $links = array(
         'src/config/%s.class.php',
         'src/core/%s.class.php',
@@ -37,7 +37,7 @@ class Bootstrap
     {
         $result = false;
         foreach ($this->links as $link) {
-            $file_path = $_SERVER['DOCUMENT_ROOT']."/".sprintf( $link, $className );
+            $file_path = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR.sprintf( $link, $className );
             $this->log("file_path: ".$file_path);
             if (file_exists($file_path)) {
                 include_once($file_path);
@@ -55,7 +55,7 @@ class Bootstrap
      */
     private function log($text)
     {
-        $fd = fopen($_SERVER['DOCUMENT_ROOT']."/src/log/autoloader_log.txt", 'a+') or die("Autoloader: failed to write log!");
+        $fd = fopen(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."log".DIRECTORY_SEPARATOR."autoloader_log.txt", 'a+') or die("Autoloader: failed to write log!");
         $str = date('[Y.m.d] [H:i:s]')." class - ".$text."\n";
         fwrite($fd, $str);
         fclose($fd);
@@ -66,7 +66,7 @@ class Bootstrap
      */
     private function clearLog()
     {
-        $fd = fopen($_SERVER['DOCUMENT_ROOT']."/src/log/autoloader_log.txt", 'w') or die("Autoloader: failed to write log!");
+        $fd = fopen(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."log".DIRECTORY_SEPARATOR."autoloader_log.txt", 'w+') or die("Autoloader: failed to write log!");
         fwrite($fd, "");
         fclose($fd);
     }

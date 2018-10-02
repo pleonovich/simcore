@@ -1,11 +1,12 @@
 <?php 
 
-class IndexController extends Controller {
+class IndexController {
 
-    public function Index () {
-        View::factory()
-        ->bind('title','Hello!')
-        ->render('hello');
+    public function Index ($req, $resp) {
+        $resp->send(View::factory()
+        ->bind('title','SimCore')
+        ->bind('description','Simple MVC Framework for PHP')
+        ->render('hello'));
     }
 
 }

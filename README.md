@@ -29,15 +29,14 @@ Routes config settings in index file ```index.php```
 ### For search engine friendly urls
 Description:
 ```php
-Router set ( string $pattern, string $classmethod [, array $aliases=null ] )
-Router get ( string $pattern, Clousure $function)
+Router get ( string $pattern, string $classmethod | Clousure $function [, array $aliases=null ] )
 ```
 Example:
 ```php
 Router::factory()
 ->set('~^/$~', 'Index@index') // yourdomain.com
 ->set('~^/id/([0-9]+)$~', 'Index@index', array('id')) // yourdomain.com/id/7
-->get('~^/func$~', function () {
+->get('~^/func$~', function ($request, $response) {
 	echo "Hello world!";
 })
 ->run();
@@ -52,7 +51,7 @@ Example:
 ```php
 SimpleRouter::factory()
 ->setDefault('Index', 'index') // yourdomain.com
-->set('main', 'Index', 'index') // yourdomain.com?mod=main&id=7
+->get('main', 'Index', 'index') // yourdomain.com?mod=main&id=7
 ->run();
 ```
 
@@ -135,7 +134,7 @@ Boolean remove ( string $name, string $value )
 Example:
 ```php
 Model
-class IndexController extends Controller {
+class IndexController {
 
   public function Index () {   
     $data = Pages::getById(7);
