@@ -30,12 +30,17 @@ Routes config settings in index file ```index.php```
 Description:
 ```php
 Router get ( string $pattern, string $classmethod | Clousure $function [, array $aliases=null ] )
+Router post ( string $pattern, string $classmethod | Clousure $function [, array $aliases=null ] )
+Router put ( string $pattern, string $classmethod | Clousure $function [, array $aliases=null ] )
+Router delete ( string $pattern, string $classmethod | Clousure $function [, array $aliases=null ] )
 ```
 Example:
 ```php
 Router::factory()
 ->set('~^/$~', 'Index@index') // yourdomain.com
-->set('~^/id/([0-9]+)$~', 'Index@index', array('id')) // yourdomain.com/id/7
+->post('~^/articles/$~', 'Index@addArticle') // yourdomain.com/id/7
+->put('~^/articles/([0-9]+)$~', 'Index@updateArticle', array('id')) // yourdomain.com/id/7
+->delete('~^/articles/([0-9]+)$~', 'Index@deleteArticle', array('id')) // yourdomain.com/id/7
 ->get('~^/func$~', function ($request, $response) {
 	echo "Hello world!";
 })

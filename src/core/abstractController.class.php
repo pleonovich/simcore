@@ -5,7 +5,6 @@
 
 abstract class abstractController {
 	
-	protected $response; // response object
 	protected $view; // view object
 	protected $conn; // SafeMySQL object, db connection
 	protected $user = null; // user object
@@ -25,7 +24,6 @@ abstract class abstractController {
 			'port' 	 => Config::DB_PORT,
 			'socket' => Config::DB_SOCKET
 		);
-		$this->response = new Response();
 		$this->view = new View();
 		$this->conn = new SafeMySQL($opts);
 		$this->user = new User($this->conn);
