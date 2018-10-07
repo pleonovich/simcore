@@ -13,7 +13,8 @@
  */ 
 
 class Response {
-
+    
+	protected $view; // view object
     private $status = array(
         200 => "OK",
         201 => "Created",
@@ -38,6 +39,7 @@ class Response {
     );
 
     function __construct() {
+		$this->view = new View();
     }
 
     public function send($body = null) {

@@ -43,10 +43,13 @@ abstract class DBquery
     {
         if ($this->db===null) {
             $this->db = new SafeMySQL(array(
-            'user'    => Config::DB_USER,
-            'pass'    => Config::DB_PASS,
-            'db'      => Config::DB_NAME,
-            'charset' => Config::DB_CHARSET
+                'host'    => Config::DB_HOST,
+                'user'    => Config::DB_USER,
+                'pass'    => Config::DB_PASS,
+                'db'      => Config::DB_NAME,
+                'charset' => Config::DB_CHARSET,
+                'port' 	 => Config::DB_PORT,
+                'socket' => Config::DB_SOCKET
             ));
         } else {
             return $this->db;

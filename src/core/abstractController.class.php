@@ -5,11 +5,8 @@
 
 abstract class abstractController {
 	
-	protected $view; // view object
 	protected $conn; // SafeMySQL object, db connection
 	protected $user = null; // user object
-	protected $url = null; // url object
-	protected $sefurl = null; // sef
 	
 	public function __construct () {
 		//if (!session_id()) session_start();
@@ -24,11 +21,8 @@ abstract class abstractController {
 			'port' 	 => Config::DB_PORT,
 			'socket' => Config::DB_SOCKET
 		);
-		$this->view = new View();
 		$this->conn = new SafeMySQL($opts);
 		$this->user = new User($this->conn);
-		$this->url = new URL();
-		$this->sefurl = new SefURL();
 	}
 
 	public function isAccess () {
