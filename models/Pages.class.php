@@ -3,7 +3,7 @@
  * PAGES CLASS
  */
 
-class Pages extends Model {    
+class Pages extends Model {
 
     protected static $table = 'data_pages';
 

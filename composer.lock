@@ -1,0 +1,149 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "5efb9c791b6d9f0556eb4847266f1a02",
+    "packages": [
+        {
+            "name": "colshrapnel/safemysql",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/colshrapnel/safemysql.git",
+                "reference": "e1cbace64e6a6db02b5962a39990d26107d1d437"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/colshrapnel/safemysql/zipball/e1cbace64e6a6db02b5962a39990d26107d1d437",
+                "reference": "e1cbace64e6a6db02b5962a39990d26107d1d437",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "safemysql.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Colonel Shrapnel",
+                    "role": "lead",
+                    "email": "col.shrapnel@gmail.com"
+                }
+            ],
+            "description": "A real safe and convenient way to handle MySQL queries.",
+            "homepage": "https://github.com/colshrapnel/safemysql",
+            "keywords": [
+                "db",
+                "mysql"
+            ],
+            "time": "2018-05-16T10:40:18+00:00"
+        },
+        {
+            "name": "pleonovich/fultone",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pleonovich/fultone.git",
+                "reference": "b949cd73f9601330168db805676f7c22238bd3db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pleonovich/fultone/zipball/b949cd73f9601330168db805676f7c22238bd3db",
+                "reference": "b949cd73f9601330168db805676f7c22238bd3db",
+                "shasum": ""
+            },
+            "require": {
+                "colshrapnel/safemysql": "1.*",
+                "php": ">=5.0.0",
+                "pleonovich/log": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fultone\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Pavel Leonovich",
+                    "role": "lead",
+                    "email": "leonovich.pavel@gmail.com"
+                }
+            ],
+            "description": "Fultone is simple object-relational queries helper for SafeMySQL",
+            "homepage": "https://github.com/pleonovich/fultone",
+            "keywords": [
+                "db",
+                "mysql",
+                "orm"
+            ],
+            "time": "2019-07-28T14:41:10+00:00"
+        },
+        {
+            "name": "pleonovich/log",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pleonovich/log.git",
+                "reference": "457b39aca7c94958c5914076f16f50234ab2da9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pleonovich/log/zipball/457b39aca7c94958c5914076f16f50234ab2da9b",
+                "reference": "457b39aca7c94958c5914076f16f50234ab2da9b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "log.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Pavel Leonovich",
+                    "role": "lead",
+                    "email": "leonovich.pavel@gmail.com"
+                }
+            ],
+            "description": "Simple way to write log information into txt file from PHP.",
+            "homepage": "https://github.com/pleonovich/log",
+            "keywords": [
+                "log",
+                "php"
+            ],
+            "time": "2018-11-10T17:51:07+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.0.0"
+    },
+    "platform-dev": []
+}

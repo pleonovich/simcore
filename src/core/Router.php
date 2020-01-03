@@ -1,4 +1,8 @@
 <?php
+namespace SimCore\core;
+
+use SimCore\core\Responce as Responce;
+
 /**
  * ROUTER CLASS 1.0.1
  *
@@ -13,7 +17,6 @@
  * ->run();
  *
  */
-require_once("Response.class.php");
 
 class Router
 {

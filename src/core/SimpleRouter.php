@@ -1,4 +1,6 @@
 <?php
+namespace SimCore\core;
+
 /**
  * SIMPLE ROUTER CLASS 1.0.0
  *

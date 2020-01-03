@@ -1,4 +1,6 @@
 <?php
+namespace SimCore\core;
+
 /**
  * VIEW CLASS
  * ==========
@@ -16,7 +18,7 @@
 class View
 {
     protected static $_global_params = array();
-    public static $dir_tmpl = "src/views";
+    public static $dir_tmpl = "src/view";
     private $template;
     private $extends;
     private $cache;
@@ -64,6 +66,8 @@ class View
     {
         if ($dir!=null) {
             self::$dir_tmpl = $dir;
+        } else {
+            self::$dir_tmpl = Config::$views_dir;
         }
     }
 

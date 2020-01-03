@@ -1,4 +1,6 @@
 <?php
+namespace SimCore\core;
+
 /**
  * Response 1.0.0
  *

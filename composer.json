@@ -1,0 +1,33 @@
+{
+    "name": "pleonovich/simcore",
+    "description": "simCore Simple MVC Framework for PHP",
+    "type": "library",
+    "version": "2.0.0",
+    "keywords": [
+        "simcore",
+        "framework",
+        "php"
+    ],
+    "homepage": "https://github.com/pleonovich/simcore",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Pavel Leonovich",
+            "email": "leonovich.pavel@gmail.com",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/pleonovich/simcore/issues"
+    },
+    "require": {
+        "php": ">=5.0.0",
+        "pleonovich/fultone": "1.*",
+        "pleonovich/log": "1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimCore\\": "src/"
+        }
+    }
+}

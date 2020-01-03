@@ -1,5 +1,7 @@
 <?php 
 
+use SimCore\core\View as View;
+
 class IndexController {
 
     public function Index ($req, $resp) {

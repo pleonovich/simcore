@@ -1,0 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// +--------------------------------------------------------------------------------------------+ //
+// SimCore Version
+//
+// Holds a static string representing the current version of SimCore
+//
+// Copyright (c) Leonovich Pavel (leonovich.pavel@gmail.com)
+//
+// Licensed under The MIT License
+// Redistributions of files must retain the above copyright notice.
+// +--------------------------------------------------------------------------------------------+ //
+////////////////////////////////////////////////////////////////////////////////////////////////////
+1.0.1

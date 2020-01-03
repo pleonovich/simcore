@@ -1,7 +1,9 @@
 <?php
-//////////////////////////////////
-// ABSTRACT MODULE CLASS 1.0.0 //
-////////////////////////////////
+namespace SimCore\core;
+
+/**
+ * ABSTRACT MODULE CLASS 1.0.0
+ */
 
 abstract class AbstractModule
 {

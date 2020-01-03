@@ -1,4 +1,6 @@
 <?php
+namespace SimCore\core;
+
 /**
  * SEF URL CLASS
  * =============
@@ -33,8 +35,8 @@ class SefURL
         foreach ($this->GET as $key => $value) {
             $this->URL_DATA[$key]=$value;
         }
-        $this->DOMEN_NAME = Config::DOMEN_NAME;
-        $this->HTTP_HOST = Config::HTTP_HOST;
+        $this->DOMEN_NAME = Config::$domen_name;
+        $this->HTTP_HOST = Config::$http_host;
     }
     
 	/**
