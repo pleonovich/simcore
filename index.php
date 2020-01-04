@@ -17,13 +17,14 @@ SimCore\core\Bootstrap::config(__DIR__, array(
 
 
 use SimCore\core\Router as Router;
+use SimCore\core\View as View;
 
 Router::factory()
 ->get('~^/$~', 'Index@index')
-->get('~^/hello$~', function($req, $res) {
-    $resp->send(View::factory()
-        ->bind('title','SimCore')
-        ->bind('description','Simple MVC Framework for PHP')
-        ->render('hello'));
-})
+// ->get('~^/hello$~', function($req, $res) {
+//     $res->send(View::factory()
+//         ->bind('title','SimCore')
+//         ->bind('description','Simple MVC Framework for PHP')
+//         ->render('hello'));
+// })
 ->run();

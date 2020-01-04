@@ -16,7 +16,7 @@ spl_autoload_register(array($bootstrap, 'autoload'));
 
 class Bootstrap
 {
-    private static $root = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR;
+    private static $root = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..";
     private static $links = array(
         'src/config/%s.php',
         'src/core/%s.php',
@@ -33,6 +33,7 @@ class Bootstrap
     }
 
     public static function config($root, $links) {
+        self::$root = $root;
         self::$links = $links;
     }
 
@@ -43,7 +44,7 @@ class Bootstrap
     {
         $result = false;
         foreach (self::$links as $link) {
-            $file_path = self::$root . sprintf( $link, $className );
+            $file_path = self::$root . DIRECTORY_SEPARATOR . sprintf( $link, $className );
             // $this->log("file_path: ".$file_path);
             if (file_exists($file_path)) {
                 include_once($file_path);
