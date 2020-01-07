@@ -1,7 +1,5 @@
 <?php
-//////////////////////////
-// CENSURE CLASS 1.0.0 //
-/////////////////////////
+namespace SimCore\lib;
 
 /**
  * @author zavorokhina.yuliya@gmail.com

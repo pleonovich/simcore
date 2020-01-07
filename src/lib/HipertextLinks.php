@@ -1,8 +1,8 @@
 <?php
-//////////////////////////////////
-// HIPERTEXT LINKS CLASS 1.0.0 //
-////////////////////////////////
- 
+namespace SimCore\lib;
+
+use SimCore\core\Config as Config;
+
 class HipertextLinks {
 
 	private $DATA = array();
@@ -17,16 +17,16 @@ class HipertextLinks {
 	}
 	
 	public function css ( $file, $external=false ) {
-		if($external==self::ID_EXFOLDER) $file = Config::HTTP_HOST."/".$file;
+		if($external==self::ID_EXFOLDER) $file = Config::$http_host."/".$file;
 		elseif($external==self::ID_EXURL) $file = $file;
-		else $file = Config::HTTP_HOST."/css/".$file;
+		else $file = Config::$http_host."/css/".$file;
 		$this->set($file, self::ID_CSS, $external);
 	}
 	
 	public function js ( $file, $external=false ) {	
-		if($external==self::ID_EXFOLDER) $file = Config::HTTP_HOST."/".$file;
+		if($external==self::ID_EXFOLDER) $file = Config::$http_host."/".$file;
 		elseif($external==self::ID_EXURL) $file = $file;
-		else $file = Config::HTTP_HOST."/js/".$file;
+		else $file = Config::$http_host."/js/".$file;
 		$this->set($file, self::ID_JS, $external);
 	}
 	
@@ -65,8 +65,8 @@ class HipertextLinks {
 	}
 	
 	private function print_ficon ( $file ) {
-		$icon_link = "<link href=\"".Config::HTTP_HOST."/".$file."\" rel=\"icon\" type=\"image/x-icon\" />\n";
-		$icon_link .= "<link href=\"".Config::HTTP_HOST."/".$file."\" rel=\"shortcut icon\" type=\"image/x-icon\" />\n";
+		$icon_link = "<link href=\"".Config::$http_host."/".$file."\" rel=\"icon\" type=\"image/x-icon\" />\n";
+		$icon_link .= "<link href=\"".Config::$http_host."/".$file."\" rel=\"shortcut icon\" type=\"image/x-icon\" />\n";
 		return $icon_link;
 	}
 

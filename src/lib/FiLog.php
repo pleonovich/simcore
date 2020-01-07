@@ -1,6 +1,7 @@
 <?php
+namespace SimCore\lib;
 /**
- * LOG CLASS 1.0.0
+ * FiLog 1.0.0
  *
  * @author leonovich.pavel@gmail.com
  * Simple way to write log information into txt file from PHP
@@ -12,16 +13,16 @@
  *
  * Some examples:
  *
- * LOG::setPath('Here path to log folder');
- * LOG::write('Here is your log information','Log title');
- * LOG::writeError('Here is your error log information','Error log title');
- * LOG::writeException('Here is exception object','Exception information');
- * LOG::clear();
- * LOG::border('Border title');
+ * FiLog::setPath('Here path to log folder');
+ * FiLog::write('Here is your log information','Log title');
+ * FiLog::writeError('Here is your error log information','Error log title');
+ * FiLog::writeException('Here is exception object','Exception information');
+ * FiLog::clear();
+ * FiLog::border('Border title');
  *
  */
 
-class LOG
+class FiLog
 {
     
     public static $path = "log"; // log file saving path
@@ -74,7 +75,7 @@ class LOG
      * @param exception $e - exception object
      * @param string $title - log title
      */
-    public static function writeException(Exception $e, $title = null)
+    public static function writeException(\Exception $e, $title = null)
     {
         $log = self::getDateTime()."[".$e->getFile().":".$e->getLine()."] ".$e->getMessage()."\n";
         self::writeLog($log, $title, 'error');
@@ -166,7 +167,7 @@ class LOG
         $info = debug_backtrace();
         $last = end($info);
         $log = "[".$last['file']." line:".$last['line']."]";
-        if ($last['class']!="LOG") {
+        if ($last['class']!="FiLog") {
             $log.="[class:".$last['class']."]";
         }
         return $log;
@@ -188,7 +189,7 @@ class LOG
     private static function writeLog($text, $extra = null, $filename = null)
     {
         $fpath = self::filePath($filename); //echo $fpath;
-        $fd = fopen($fpath, 'a+') or die("LOG: failed to write log!");        
+        $fd = fopen($fpath, 'a+') or die("FiLog: failed to write log!");        
         fwrite($fd, $text);
         fclose($fd);
     }

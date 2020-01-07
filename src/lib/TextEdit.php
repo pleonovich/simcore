@@ -1,7 +1,23 @@
 <?php 
-////////////////////////////
-// TEXT EDIT CLASS 1.0.0 //
-//////////////////////////
+namespace SimCore\lib;
+/**
+ * TextEdit 1.0.0
+ *
+ * @author leonovich.pavel@gmail.com
+ * Simple way to work with string data
+ *
+ * Some examples:
+ *
+ * $result = TextEdit::cutWords("Some text words", 2, 0);
+ * // Some text
+ * $result = TextEdit::countWords("Some text words");
+ * // 3
+ * $result = TextEdit::wordsSet("Some text words");
+ * // [ "Some", "text", "words" ]
+ * $result = TextEdit::transLatEngFname("НазваниеФайла.txt");
+ * $result = TextEdit::transLatEngUrl("название/НазваниеФайла.txt");
+ *
+ */
 
 class TextEdit {
 
@@ -27,8 +43,8 @@ class TextEdit {
 	}
 
 	public static function wordsSet ( $text ) {
-		$array = explode(" ",$text); // перерабатываем строку в массив
-		$words_set = implode(", ",$array); // массив снова перерабатываем в строку
+		$array = explode(" ",$text); // convertion string to array
+		$words_set = implode(", ",$array); // array convertion back to string
 		if (self::countWords($text) > 1) {
 			if (substr($words_set,-1) == ",") {
 				$words_set = substr($words_set,0,-1);
@@ -42,7 +58,7 @@ class TextEdit {
 		$str = htmlspecialchars($str,ENT_QUOTES);
 		$str = preg_replace('| +|', '', $str);
 		$str = str_replace(array("'","\""), '', $str);
-		$str = self::transLatEng ($str);	
+		$str = self::transLatEng($str);
 		return $str;
 	}
 
@@ -59,7 +75,7 @@ class TextEdit {
 
 	public static function transLatEng ( $str ) {
 		$replace = array(
-			"&"=>"",		
+			"&"=>"",
 			"а"=>"a","А"=>"a",
 			"б"=>"b","Б"=>"b",
 			"в"=>"v","В"=>"v",
@@ -97,10 +113,6 @@ class TextEdit {
 			"є"=>"e","Є"=>"e"
 		);
 		$str = strtolower($str);
-		return $str=strtr($str,$replace);
+		return strtr($str, $replace);
 	}
-
-
 }
-
-?>

@@ -1,5 +1,5 @@
 <?php
-
+namespace SimCore\lib;
 /**
  * DATE EDIT CLASS 1.0.0
  *

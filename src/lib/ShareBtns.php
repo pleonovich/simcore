@@ -1,5 +1,7 @@
 <?php
+namespace SimCore\lib;
 
+use SimCore\core\Config as Config;
 
 class ShareBtns {
     
@@ -22,7 +24,7 @@ class ShareBtns {
     public function render ($title, $url)
     {
         $url = urlencode($url);
-        $title = $title." - ".Config::APPNAME;
+        $title = $title." - ".Config::$app_name;
         $BUTNS = "<div class='menu_share_btn_box'>";
         foreach ($this->services as $s => $urlm) {
             $urlm = str_replace("#URL", $url, $urlm);

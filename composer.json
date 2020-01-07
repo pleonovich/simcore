@@ -2,7 +2,7 @@
     "name": "pleonovich/simcore",
     "description": "simCore Simple MVC Framework for PHP",
     "type": "library",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "keywords": [
         "simcore",
         "framework",

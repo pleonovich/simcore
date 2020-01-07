@@ -1,8 +1,5 @@
 <?php
-///////////////////////////
-// ANTISPAM CLASS 1.0.0 //
-/////////////////////////
-
+namespace SimCore\lib;
 /**
  * @author zavorokhina.yuliya@gmail.com
  * Filter for cover spam links.

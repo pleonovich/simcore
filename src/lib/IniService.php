@@ -1,11 +1,12 @@
 <?php 
+namespace SimCore\lib;
 
-class INI {
+class IniService {
 
     public $data = array();
 
-    function __construct ( $name ) {
-        $this->data = parse_ini_file($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR.$name);
+    function __construct ( $filePath ) {
+        $this->data = parse_ini_file($filePath);
     }
 
     public function __get ( $name ) {
@@ -14,7 +15,7 @@ class INI {
     }
 
     public static function factory ( $name ) {
-        return new INI($name);
+        return new IniService($name);
     }
 
 }

@@ -1,4 +1,5 @@
 <?php
+namespace SimCore\lib;
 /**
  * ARGS CLASS 1.0.0
  *
