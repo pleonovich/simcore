@@ -1,4 +1,5 @@
 <?php
+namespace SimCore\lib;
 /**
  * DO INPUT CLASS 1.0.0
  *

@@ -40,9 +40,9 @@ class Router
     /**
      * Set route
      *
+     * @param string $method - request method
      * @param string $pattern - url regular expression
-     * @param string $class - controller name
-     * @param string $method - controller method name
+     * @param string $classmethod - controller name and method names
      * @param array $aliases - url params
      * @return this object
      */
@@ -105,7 +105,7 @@ class Router
                     $this->params[$map['aliases'][$index]] = $value;
                 }
                 $this->module = $map['className']."Controller";
-                $this->action = $map['classMethod'];                
+                $this->action = $map['classMethod'];
                 $this->body = file_get_contents('php://input');
                 $this->body = json_decode($this->body, TRUE);
                 break;

@@ -65,14 +65,19 @@ class Response {
 
     public function status($code) {
         if(isset($this->status[$code])) $this->headers['Status'] = $code;
-        else throw new Exception('Error! Status not found');
+        else throw new \Exception('Error! Status not found');
         return $this;
     }
 
     public function __call($name, $params) {
         if(isset($this->headers[$name])) {
             $this->headers[$name] =  $params[0];
-        } else throw new Exception('Error! Header not found');
+        } else throw new \Exception('Error! Header not found');
         return $this;
+    }
+
+    public function redirect($url) {
+        $this->Location($url);
+	    $this->send();
     }
 }

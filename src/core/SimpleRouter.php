@@ -24,7 +24,12 @@ class SimpleRouter
     private $index = 'mod';
     public $module = 'Not_Found';
     public $action = 'main';
+    public $function = NULL;
     public $params = array();
+    public $body = array();
+    
+    private $request;
+    private $response;
 
     function __construct()
     {
@@ -35,14 +40,14 @@ class SimpleRouter
 	/**
      * Set default route
      *
-     * @param string $class - controller name
-     * @param string $method - controller method name
+     * @param string $classmethod - controller name and method names
      * @return this object
      */
-    public function setDefault($class, $method)
+    public function setDefault($classmethod)
     {
-        $this->module = $class."Controller";
-        $this->action = $method;
+        $cm = explode('@',$classmethod);
+        $this->module = $cm[0]."Controller";
+        $this->action = $cm[1];
         return $this;
     }
 
@@ -50,14 +55,44 @@ class SimpleRouter
      * Set route
      *
      * @param string $mod - value of parametr in url by index - $this->index
-     * @param string $class - controller name
-     * @param string $method - controller method name
+     * @param string $classmethod - controller name and method names
      * @return this object
      */
-    public function set($mod, $class, $method)
+    public function set($method, $mod, $classmethod)
     {
-        $this->routes[$mod]['class'] = $class;
-        $this->routes[$mod]['method'] = $method;        
+        $this->routes[$mod]['method'] = $method;
+        if (is_string($classmethod)) {
+            $cm = explode('@',$classmethod);
+            if (count($cm) < 2) {
+                throw new \Exception("Invalid classmethod value - '$classmethod'");
+            }
+            $this->routes[$mod]['className'] = $cm[0];
+            $this->routes[$mod]['classMethod'] = $cm[1];
+        } else if (is_callable($classmethod)){
+            $this->routes[$mod]['className'] = '';
+            $this->routes[$mod]['classMethod'] = '';
+            $this->routes[$mod]['function'] = $classmethod;
+        }
+        return $this;
+    }
+
+    function get($mod, $classmethod) {
+        $this->set("GET", $mod, $classmethod);
+        return $this;
+    }
+    
+    function post($mod, $classmethod) {
+        $this->set('POST', $mod, $classmethod);
+        return $this;
+    }
+    
+    function put($mod, $classmethod) {
+        $this->set("PUT", $mod, $classmethod);
+        return $this;
+    }
+    
+    function delete($mod, $classmethod) {
+        $this->set("DELETE", $mod, $classmethod);
         return $this;
     }
 
@@ -71,8 +106,13 @@ class SimpleRouter
         if (isset($this->url_path[$this->index])) {
             $mod = $this->url_path[$this->index];
             if (isset($this->routes[$mod])) {
-                $this->module = $this->routes[$mod]['class']."Controller";
-                $this->action = $this->routes[$mod]['method'];
+                if(isset($this->routes[$mod]['function'])) {
+                    $this->function = $this->routes[$mod]['function'];
+                }
+                $this->module = $this->routes[$mod]['className']."Controller";
+                $this->action = $this->routes[$mod]['classMethod'];
+                $this->body = file_get_contents('php://input');
+                $this->body = json_decode($this->body, TRUE);
             } else {
                 die('Error! Route '.$this->index.' doesn`t found.');
             }
@@ -86,11 +126,19 @@ class SimpleRouter
     public function run()
     {
         $this->init();
+        $this->body = file_get_contents('php://input');
+        $this->body = json_decode($this->body, TRUE);
+        $this->request = new Request($_GET, $this->body);
+        $this->response = new Response();
+        if(is_callable($this->function)) {
+            $func = $this->function;
+            return $func($this->request, $this->response);
+        }
         if (class_exists($this->module)) {
             $MODULE = new $this->module();
             $action = $this->action;
             if (method_exists($MODULE, $this->action)) {
-                $MODULE->$action();
+                $MODULE->$action($this->request, $this->response);
             } else {
                 die("Error! Method ".$this->action." is not found");
             }

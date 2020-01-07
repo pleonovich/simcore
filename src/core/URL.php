@@ -99,7 +99,7 @@ class URL
                 $params[] = $key."=".$value;
             }
         }
-        if (count($params>0)) {
+        if (count($params) > 0) {
             return $gen_url."?".implode("&", $params);
         } else {
             return $gen_url;

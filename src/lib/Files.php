@@ -1,4 +1,5 @@
 <?php
+namespace SimCore\lib;
 /**
  * FILES CLASS 1.0.0
  *
