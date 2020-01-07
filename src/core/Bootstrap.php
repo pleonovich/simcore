@@ -43,18 +43,28 @@ class Bootstrap
     public function autoload($className)
     {
         $result = false;
-        foreach (self::$links as $link) {
-            $file_path = self::$root . DIRECTORY_SEPARATOR . sprintf( $link, $className );
-            // $this->log("file_path: ".$file_path);
-            if (file_exists($file_path)) {
-                include_once($file_path);
-                $result = true;
-                // $this->log($className." is loaded!");
+        $className = str_replace('\\', '/', $className);
+        $file_path = self::$root . DIRECTORY_SEPARATOR . $className . ".php";
+        if (file_exists($file_path)) {
+            include_once($file_path);
+            $result = true;
+            // echo " file_path: ".$file_path;
+        } else {
+            foreach (self::$links as $link) {
+                $file_path = self::$root . DIRECTORY_SEPARATOR . sprintf( $link, $className );
+                $this->log("file_path: ".$file_path);
+                // echo " file_path: ".$file_path;
+                if (file_exists($file_path)) {
+                    include_once($file_path);
+                    $result = true;
+                    break;
+                    //$this->log("className: ".$className." is loaded!");
+                }
             }
         }
         if (!$result) {
             throw new \Exception($className." loading failed!");
-            // $this->log($className." loading failed!");
+            $this->log($className." loading failed!");
         }
     }
     
@@ -63,7 +73,7 @@ class Bootstrap
      */
     private function log($text)
     {
-        $fd = fopen(self::$root."log".DIRECTORY_SEPARATOR."autoloader_log.txt", 'a+') or die("Autoloader: failed to write log!");
+        $fd = fopen(self::$root.DIRECTORY_SEPARATOR."log".DIRECTORY_SEPARATOR."autoloader_log.txt", 'a+') or die("Autoloader: failed to write log!");
         $str = date('[Y.m.d] [H:i:s]')." class - ".$text."\n";
         fwrite($fd, $str);
         fclose($fd);
@@ -74,7 +84,7 @@ class Bootstrap
      */
     private function clearLog()
     {
-        $fd = fopen(self::$root."log".DIRECTORY_SEPARATOR."autoloader_log.txt", 'w+') or die("Autoloader: failed to write log!");
+        $fd = fopen(self::$root.DIRECTORY_SEPARATOR."log".DIRECTORY_SEPARATOR."autoloader_log.txt", 'w+') or die("Autoloader: failed to write log!");
         fwrite($fd, "");
         fclose($fd);
     }
