@@ -73,46 +73,237 @@ class TextEdit {
 		return $str;
 	}
 
-	public static function transLatEng ( $str ) {
-		$replace = array(
-			"&"=>"",
-			"а"=>"a","А"=>"a",
-			"б"=>"b","Б"=>"b",
-			"в"=>"v","В"=>"v",
-			"г"=>"g","Г"=>"g",
-			"д"=>"d","Д"=>"d",
-			"е"=>"e","Е"=>"e",
-			"ж"=>"zh","Ж"=>"zh",
-			"з"=>"z","З"=>"z",
-			"и"=>"i","И"=>"i",
-			"й"=>"y","Й"=>"y",
-			"к"=>"k","К"=>"k",
-			"л"=>"l","Л"=>"l",
-			"м"=>"m","М"=>"m",
-			"н"=>"n","Н"=>"n",
-			"о"=>"o","О"=>"o",
-			"п"=>"p","П"=>"p",
-			"р"=>"r","Р"=>"r",
-			"с"=>"s","С"=>"s",
-			"т"=>"t","Т"=>"t",
-			"у"=>"u","У"=>"u",
-			"ф"=>"f","Ф"=>"f",
-			"х"=>"h","Х"=>"h",
-			"ц"=>"c","Ц"=>"c",
-			"ч"=>"ch","Ч"=>"ch",
-			"ш"=>"sh","Ш"=>"sh",
-			"щ"=>"sch","Щ"=>"sch",
-			"ъ"=>"","Ъ"=>"",
-			"ы"=>"y","Ы"=>"y",
-			"ь"=>"","Ь"=>"",
-			"э"=>"e","Э"=>"e",
-			"ю"=>"yu","Ю"=>"yu",
-			"я"=>"ya","Я"=>"ya",
-			"і"=>"i","І"=>"i",
-			"ї"=>"yi","Ї"=>"yi",
-			"є"=>"e","Є"=>"e"
-		);
-		$str = strtolower($str);
-		return strtr($str, $replace);
-	}
+	public static function transLatEng($str) {
+		$mm = strlen($str);
+		$TEXT = "";
+		// echo "str = ".$str." / mm = ".$mm."<br>";
+		for ($i = 0; $i < $mm; $i++) {
+			$ss = mb_substr($str, $i, 1, "utf-8");
+			// echo "i=".$i." / ss=".$ss."<br>";
+			switch ($ss) {
+				case "#":
+					$TEXT = $TEXT."";
+					break;
+				case "¹":
+					$TEXT = $TEXT."";
+					break;
+				case "+":
+					$TEXT = $TEXT."";
+					break;
+				case "(":
+					$TEXT = $TEXT."";
+					break;
+				case ")":
+					$TEXT = $TEXT."";
+					break;
+				case "\"":
+					$TEXT = $TEXT."";
+					break;
+				case "?":
+					$TEXT = $TEXT."";
+					break;
+				case ".":
+					$TEXT = $TEXT."";
+					break;
+				case ",":
+					$TEXT = $TEXT."";
+					break;
+				case "/":
+					$TEXT = $TEXT."";
+					break;
+				case "а":
+					$TEXT = $TEXT."a";
+					break;				
+				case "А":
+					$TEXT = $TEXT."A";
+					break;				
+				case "б":
+					$TEXT = $TEXT."b";
+					break;				
+				case "Б":
+					$TEXT = $TEXT."B";
+					break;				
+				case "в":
+					$TEXT = $TEXT."v";
+					break;				
+				case "В":
+					$TEXT = $TEXT."V";
+					break;				
+				case "г":
+					$TEXT = $TEXT."g";
+					break;				
+				case "Г":
+					$TEXT = $TEXT."G";
+					break;				
+				case "д":
+					$TEXT = $TEXT."d";
+					break;				
+				case "Д":
+					$TEXT = $TEXT."D";
+					break;				
+				case "е":
+					$TEXT = $TEXT."e";
+					break;				
+				case "Е":
+					$TEXT = $TEXT."E";
+					break;				
+				case "ё":
+					$TEXT = $TEXT."ye";
+					break;				
+				case "Ё":
+					$TEXT = $TEXT."Ye";
+					break;				
+				case "ж":
+					$TEXT = $TEXT."zh";
+					break;				
+				case "Ж":
+					$TEXT = $TEXT."Zh";
+					break;				
+				case "з":
+					$TEXT = $TEXT."z";
+					break;				
+				case "З":
+					$TEXT = $TEXT."Z";
+					break;				
+				case "и":
+					$TEXT = $TEXT."i";
+					break;				
+				case "И":
+					$TEXT = $TEXT."I";
+					break;				
+				case "й":
+					$TEXT = $TEXT."y";
+					break;				
+				case "Й":
+					$TEXT = $TEXT."Y";
+					break;				
+				case "к":
+					$TEXT = $TEXT."k";
+					break;				
+				case "К":
+					$TEXT = $TEXT."K";
+					break;				
+				case "л":
+					$TEXT = $TEXT."l";
+					break;				
+				case "Л":
+					$TEXT = $TEXT."L";
+					break;				
+				case "м":
+					$TEXT = $TEXT."m";
+					break;				
+				case "М":
+					$TEXT = $TEXT."M";
+					break;				
+				case "н":
+					$TEXT = $TEXT."n";
+					break;				
+				case "Н":
+					$TEXT = $TEXT."N";
+					break;				
+				case "о":
+					$TEXT = $TEXT."o";
+					break;				
+				case "О":
+					$TEXT = $TEXT."O";
+					break;				
+				case "п":
+					$TEXT = $TEXT."p";
+					break;				
+				case "П":
+					$TEXT = $TEXT."P";
+					break;				
+				case "р":
+					$TEXT = $TEXT."r";
+					break;				
+				case "Р":
+					$TEXT = $TEXT."R";
+					break;				
+				case "с":
+					$TEXT = $TEXT."s";
+					break;				
+				case "С":
+					$TEXT = $TEXT."S";
+					break;				
+				case "т":
+					$TEXT = $TEXT."t";
+					break;				
+				case "Т":
+					$TEXT = $TEXT."T";
+					break;				
+				case "у":
+					$TEXT = $TEXT."u";
+					break;				
+				case "У":
+					$TEXT = $TEXT."U";
+					break;				
+				case "ф":
+					$TEXT = $TEXT."f";
+					break;				
+				case "Ф":
+					$TEXT = $TEXT."F";
+					break;				
+				case "х":
+					$TEXT = $TEXT."h";
+					break;				
+				case "Х":
+					$TEXT = $TEXT."H";
+					break;				
+				case "ц":
+					$TEXT = $TEXT."c";
+					break;				
+				case "Ц":
+					$TEXT = $TEXT."C";
+					break;				
+				case "ч":
+					$TEXT = $TEXT."ch";
+					break;				
+				case "Ч":
+					$TEXT = $TEXT."Ch";
+					break;				
+				case "ш":
+					$TEXT = $TEXT."sh";
+					break;				
+				case "Ш":
+					$TEXT = $TEXT."Sh";
+					break;				
+				case "щ":
+					$TEXT = $TEXT."sch";
+					break;				
+				case "Щ":
+					$TEXT = $TEXT."Sch";
+					break;				
+				case "ь":
+					$TEXT = $TEXT."";
+					break;				
+				case "ъ":
+					$TEXT = $TEXT."";
+					break;				
+				case "э":
+					$TEXT = $TEXT."e";
+					break;				
+				case "Э":
+					$TEXT = $TEXT."E";
+					break;				
+				case "ю":
+					$TEXT = $TEXT."yu";
+					break;				
+				case "Ю":
+					$TEXT = $TEXT."Yu";
+					break;				
+				case "я":
+					$TEXT = $TEXT."ya";
+					break;				
+				case "Я":
+					$TEXT = $TEXT."Ya";
+					break;				
+				default:
+					$TEXT = $TEXT.$ss;
+				}
+			}
+			$str = $TEXT;
+			$str = strtolower($str);
+			return $str;
+		}
+
 }
